@@ -137,7 +137,7 @@ func TestFinalizeRequestAppliesEventMessage(t *testing.T) {
 	ctx, event := StartRequest(context.Background(), "GET", "/x")
 	hc.SetMessage(ctx, "hello world")
 	sink := hc.NewTestSink()
-	cfg := NormalizeConfig(hc.Config{Sink: sink, SamplingRate: 1})
+	cfg := NormalizeConfig(hc.Config{Sink: sink, SamplingRate: 1, Message: "default message"})
 
 	FinalizeRequest(cfg, FinalizeInput{
 		Ctx:        ctx,
@@ -152,7 +152,7 @@ func TestFinalizeRequestAppliesEventMessage(t *testing.T) {
 		t.Fatalf("expected 1 event, got %d", len(events))
 	}
 	if events[0].Message != "hello world" {
-		t.Fatalf("Message = %s, want 'hello world", events[0].Message)
+		t.Fatalf("Message = %s, want 'hello world'", events[0].Message)
 	}
 }
 
